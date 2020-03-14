@@ -1,3 +1,5 @@
+#Bikeshare Project Created March 1, 2020
+#by Ted Jordan
 import time
 import pandas as pd
 #import numpy as np
@@ -39,12 +41,8 @@ def get_filters():
     while day not in {'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday', 'all', 'All'}:
         day = input ("Please choose from: Monday, Tuesday, Wednesday, Thursday, Friday, Saturday, Sunday, or all.  ")
 
-
-
-
     print('-'*40)
     return city, month, day
-
 
 def load_data(city, month, day):
     """
@@ -66,14 +64,13 @@ def load_data(city, month, day):
     # extract month and day of week from Start Time to create new columns
     df['month'] = df['Start Time'].dt.month
     df['day_of_week'] = df['Start Time'].dt.weekday_name
-    
 
     # filter by month if applicable
     if month != 'all':
         # use the index of the months list to get the corresponding int
 #        months = ['january', 'february', 'march', 'april', 'may', 'june']
         month = months.index(month) + 1
-    
+
         # filter by month to create the new dataframe
         df = df[df['month'] == month]
 
@@ -81,29 +78,24 @@ def load_data(city, month, day):
     if day != 'All':
         # filter by day of week to create the new dataframe
         df = df[df['day_of_week'] == day.title()]
-    
+
     return df
-
-
 def time_stats(df):
     """Displays statistics on the most frequent times of travel."""
 
     print('\nCalculating The Most Frequent Times of Travel...\n')
     start_time = time.time()
 
-
-    # TO DO: display the most common month   
+    # TO DO: display the most common month
     df['month'] = df['Start Time'].dt.month
     popular_month = df['month'].mode()[0]
-    popular_month = months[popular_month-1] 
+    popular_month = months[popular_month-1]
     print('Most Popular Month:',popular_month)
-    
-    
+
     # TO DO: display the most common day of week
     df['day_of_week'] = df['Start Time'].dt.weekday_name
-    popular_dow = df['day_of_week'].mode()[0]                  
+    popular_dow = df['day_of_week'].mode()[0]
     print('Most Popular Day of Week: ', popular_dow)
-
 
     # TO DO: display the most common start hour
     df['Start Time'] = pd.to_datetime(df['Start Time'])
@@ -111,10 +103,8 @@ def time_stats(df):
     popular_hr = df['hour'].mode()[0]
     print('Most Popular Hour:  ',popular_hr)
 
-
     print("\nThis took %s seconds." % (time.time() - start_time))
     print('-'*40)
-
 
 def station_stats(df):
     """Displays statistics on the most popular stations and trip."""
@@ -134,12 +124,9 @@ def station_stats(df):
     pop_SS_ES = df['Start Station'] + ' Station and '+ df['End Station'] + ' Station'
     pop_SS_ES = pop_SS_ES.mode()[0]
     print('The Most Popular Start and End Stations Combos are:\n ',pop_SS_ES)
-    
-    
-    
+
     print("\nThis took %s seconds." % (time.time() - start_time))
     print('-'*40)
-
 
 def trip_duration_stats(df):
     """Displays statistics on the total and average trip duration."""
@@ -157,10 +144,9 @@ def trip_duration_stats(df):
     df['tripduration'] = df['End Time'] - df['Start Time']
     df['mean']= df['tripduration'].mean()
     print('The Mean Travel Time Over the Specified Period is: ',df['mean'].iloc[-1])
-    
+
     print("\nThis took %s seconds." % (time.time() - start_time))
     print('-'*40)
-
 
 def user_stats(df):
     """Displays statistics on bikeshare users."""
@@ -173,21 +159,14 @@ def user_stats(df):
     print(df['User Type'].value_counts())
     print('\n')
 
-
     # TO DO: Display counts of gender
-
-    #for col in list(df) determine if Gender is found: 
+    #for col in list(df) determine if Gender is found:
     if ('Gender' in list(df)):
         print('Gender was found')
         df['Gender'] = df['Gender'].fillna('Empty')
         print(df['Gender'].value_counts())
-    else:    
+    else:
         print('Gender not in the file')
-
-
-
-
-
 
     # TO DO: Display earliest, most recent, and most common year of birth
 
@@ -195,7 +174,7 @@ def user_stats(df):
         print('Birth Year Was Found.')
         df['Birth Year'] = pd.to_numeric(df['Birth Year'],errors='ignore')
         birthyear = df['Birth Year'].mode()[0]
-        print('The Most Common Year of Birth is: ',int(birthyear))        
+        print('The Most Common Year of Birth is: ',int(birthyear))
 
         earliest = df['Birth Year'].min()
         print('The Earliest Birth Year is: ',int(earliest))
@@ -203,14 +182,11 @@ def user_stats(df):
         most_recent = df['Birth Year'].max()
         print('The Most recent Birth Year is: ',int(most_recent))
 
-
     else:
         print('No Birth Year Was Found.')
 
-
     print("\nThis took %s seconds." % (time.time() - start_time))
     print('-'*40)
-
 
 def raw(df):
     index1=0
@@ -225,8 +201,6 @@ def raw(df):
        else:
            break
 
-
-
 def main():
     while True:
         city, month, day = get_filters()
@@ -238,14 +212,9 @@ def main():
         user_stats(df)
         raw(df)
 
-
-
-
-
         restart = input('\nWould you like to restart? Enter yes or no.\n')
         if restart.lower() != 'yes':
             break
-
 
 if __name__ == "__main__":
 	main()
